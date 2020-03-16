@@ -109,6 +109,7 @@ class connect_S3():
             io.BytesIO(body),
             sep = sep,
             encoding=encoding,
+            low_memory=False,
             error_bad_lines=False)
 
         return df_
