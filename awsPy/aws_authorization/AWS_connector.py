@@ -5,7 +5,6 @@ class aws_instantiate():
     def __init__(self, credential, region):
         self.credential = credential
         self.region= region
-        #self.bucket = bucket
 
 #### LOAD CREDENTIAL
     def load_credential(self):
