@@ -107,7 +107,7 @@ class connect_S3():
 
         df_ = pd.read_csv(
             io.BytesIO(body),
-            sep = ';',
+            sep = None,
             error_bad_lines=False)
 
         return df_
