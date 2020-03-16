@@ -4,8 +4,9 @@ import boto3, logging, io
 from botocore.exceptions import ClientError
 
 class connect_S3():
-    def __init__(self, client):
+    def __init__(self,client, bucket):
         self.client =client
+        self.bucket = bucket
 #### S3
     def download_file(self, file_name):
         """

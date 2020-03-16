@@ -5,8 +5,9 @@ import boto3
 from pyathena import connect
 
 class connect_athena():
-    def __init__(self, client):
+    def __init__(self, client, bucket):
         self.client =client
+        self.bucket = bucket
     def run_query(self, query, database, s3_output):
         """
         s3_output -> 'output_sql'
