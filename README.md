@@ -9,7 +9,7 @@ This library proposes a straightforward data workflow between Jupyter notebook, 
 
 ```
 pip install git+git://github.com/thomaspernet/aws-python
-pip install -upgrade git+git://github.com/thomaspernet/aws-python
+pip install --upgrade git+git://github.com/thomaspernet/aws-python
 ```
 
 Update library
