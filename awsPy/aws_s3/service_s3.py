@@ -96,7 +96,7 @@ class connect_S3():
             return False
         return True
 
-    def read_df_from_s3(self, key):
+    def read_df_from_s3(self, key, sep = ','):
         """
         key is the key in S3
         No Dask supported yet
@@ -107,9 +107,7 @@ class connect_S3():
 
         df_ = pd.read_csv(
             io.BytesIO(body),
-            sep = None,
-            engine='python',
-            encoding="utf8",
+            sep = sep,
             error_bad_lines=False)
 
         return df_
