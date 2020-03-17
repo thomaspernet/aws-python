@@ -27,11 +27,10 @@ class connect_S3():
             else:
                 raise
 
-    def upload_file(self, bucket, file_name, subfolder=None):
+    def upload_file(self, key):
         """Upload a file to an S3 bucket
-        :param file_name: File to upload
-        :param bucket: Bucket to upload to
-        :param object_name: S3 object name.
+        filename is deduce from key
+
         If not specified then file_name is used
         :return: True if file was uploaded, else False
         """
@@ -40,16 +39,17 @@ class connect_S3():
         if subfolder is None:
             subfolder = file_name
 
-        client_boto = self.client['s3']
+        client_boto = self.client['resource']
+        filename = os.path.split(key)[1]
 
     # Upload the file
-        try:
-            response = client_boto.upload_file(
-                file_name, self.bucket, subfolder)
-        except ClientError as e:
-            logging.error(e)
-            return False
-        return True
+    try:
+        client_boto.Bucket(self.bucket).upload_file(key, filename)
+    except botocore.exceptions.ClientError as e:
+        if e.response['Error']['Code'] == "404":
+            print("The object does not exist.")
+        else:
+            raise
 
     def create_folder(self, directory_name):
         """
