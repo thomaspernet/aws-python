@@ -32,20 +32,19 @@ class connect_athena():
         print('Execution ID: ' + response['QueryExecutionId'])
         return response
 
-    def query_to_df(self, query, s3_output):
+    def query_to_df(self, query, s3_output, region):
         """
         s3_output -> 'output_sql'
+        need to review this! Should not rely on third party library
         """
 
 
         s3_output = 's3://{}/{}/'.format(self.bucket, s3_output)
 
-        client = self.client['athena']
-
         conn = connect(aws_access_key_id=self.key,
                aws_secret_access_key=self.secret_,
                s3_staging_dir=s3_output,
-               region_name=self.region)
+               region_name=sregion)
 
         df = pd.read_sql(query, conn)
 
