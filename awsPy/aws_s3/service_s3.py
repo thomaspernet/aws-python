@@ -27,7 +27,7 @@ class connect_S3():
             else:
                 raise
 
-    def upload_file(self, key):
+    def upload_file(self, file_to_upload, destination_in_s3):
         """Upload a file to an S3 bucket
         filename is deduce from key
 
@@ -36,11 +36,12 @@ class connect_S3():
         """
 
         client_boto = self.client['resource']
-        filename = os.path.split(key)[1]
+        filename = os.path.split(file_to_upload)[1]
+        key = '{}/{}'.format(destination_in_s3, filename)
 
         # Upload the file
         try:
-            client_boto.Bucket(self.bucket).upload_file(key, filename)
+            client_boto.Bucket(self.bucket).upload_file(file_to_upload, key)
         except ClientError as e:
             if e.response['Error']['Code'] == "404":
                 print("The object does not exist.")
