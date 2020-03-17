@@ -21,7 +21,7 @@ class connect_S3():
     # Download the file
         try:
             client_boto.Bucket(self.bucket).download_file(key, filename)
-        except botocore.exceptions.ClientError as e:
+        except ClientError as e:
             if e.response['Error']['Code'] == "404":
                 print("The object does not exist.")
             else:
@@ -35,17 +35,13 @@ class connect_S3():
         :return: True if file was uploaded, else False
         """
 
-        # If S3 object_name was not specified, use file_name
-        if subfolder is None:
-            subfolder = file_name
-
         client_boto = self.client['resource']
         filename = os.path.split(key)[1]
 
     # Upload the file
     try:
         client_boto.Bucket(self.bucket).upload_file(key, filename)
-    except botocore.exceptions.ClientError as e:
+    except ClientError as e:
         if e.response['Error']['Code'] == "404":
             print("The object does not exist.")
         else:
