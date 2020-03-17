@@ -38,14 +38,14 @@ class connect_S3():
         client_boto = self.client['resource']
         filename = os.path.split(key)[1]
 
-    # Upload the file
-    try:
-        client_boto.Bucket(self.bucket).upload_file(key, filename)
-    except ClientError as e:
-        if e.response['Error']['Code'] == "404":
-            print("The object does not exist.")
-        else:
-            raise
+        # Upload the file
+        try:
+            client_boto.Bucket(self.bucket).upload_file(key, filename)
+        except ClientError as e:
+            if e.response['Error']['Code'] == "404":
+                print("The object does not exist.")
+            else:
+                raise
 
     def create_folder(self, directory_name):
         """
