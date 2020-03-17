@@ -5,9 +5,12 @@ import boto3
 from pyathena import connect
 
 class connect_athena():
-    def __init__(self, client, bucket):
+    def __init__(self, client = None, bucket=None, credentials = None):
         self.client =client
+        self.key = credentials[0]
+        self.secret_ = credentials[1]
         self.bucket = bucket
+        
     def run_query(self, query, database, s3_output):
         """
         s3_output -> 'output_sql'
@@ -29,7 +32,7 @@ class connect_athena():
         print('Execution ID: ' + response['QueryExecutionId'])
         return response
 
-    def query_to_df(self, query, s3_output, ):
+    def query_to_df(self, query, s3_output):
         """
         s3_output -> 'output_sql'
         """
@@ -37,10 +40,10 @@ class connect_athena():
 
         s3_output = 's3://{}/{}/'.format(self.bucket, s3_output)
 
-        key, secret_ = self.client['s3']
+        client = self.client['athena']
 
-        conn = connect(aws_access_key_id=key,
-               aws_secret_access_key=secret_,
+        conn = connect(aws_access_key_id=self.key,
+               aws_secret_access_key=self.secret_,
                s3_staging_dir=s3_output,
                region_name=self.region)
 
