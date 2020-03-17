@@ -1,5 +1,5 @@
 import pandas as pd
-import boto3, logging, io
+import boto3, logging, io, os
 #from sagemaker import get_execution_role
 from botocore.exceptions import ClientError
 
@@ -8,23 +8,24 @@ class connect_S3():
         self.client =client
         self.bucket = bucket
 #### S3
-    def download_file(self, file_name):
+    def download_file(self, key):
         """
-        TO IMPROVE!!
+        key -> key from S3
         """
         #if subfolder is None:
-        paths3 = '{}/{}'.format(self.bucket, file_name)
+        #paths3 = '{}/{}'.format(self.bucket, file_name)
 
-        client_boto = self.client['s3']
+        client_boto = self.client['resource']
+        filename = os.path.split(key)[1]
 
-    # Upload the file
+    # Download the file
         try:
-            response = client_boto.download_file(
-                self.bucket,paths3, file_name)
-        except ClientError as e:
-            logging.error(e)
-            return False
-        return True
+            client_boto.Bucket(self.bucket).download_file(key, filename)
+        except botocore.exceptions.ClientError as e:
+            if e.response['Error']['Code'] == "404":
+                print("The object does not exist.")
+            else:
+                raise
 
     def upload_file(self, bucket, file_name, subfolder=None):
         """Upload a file to an S3 bucket
