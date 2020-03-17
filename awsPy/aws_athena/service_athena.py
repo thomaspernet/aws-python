@@ -6,11 +6,12 @@ from pyathena import connect
 
 class connect_athena():
     def __init__(self, client = None, bucket=None, credentials = None):
+        """
+        crediitnals is a list
+        """
         self.client =client
-        self.key = credentials[0]
-        self.secret_ = credentials[1]
         self.bucket = bucket
-        
+
     def run_query(self, query, database, s3_output):
         """
         s3_output -> 'output_sql'
@@ -38,6 +39,8 @@ class connect_athena():
         need to review this! Should not rely on third party library
         """
 
+        key = self.credentials[0]
+        secret_ = self.credentials[1]
 
         s3_output = 's3://{}/{}/'.format(self.bucket, s3_output)
 
