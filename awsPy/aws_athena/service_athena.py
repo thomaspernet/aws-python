@@ -44,7 +44,7 @@ class connect_athena():
         conn = connect(aws_access_key_id=self.key,
                aws_secret_access_key=self.secret_,
                s3_staging_dir=s3_output,
-               region_name=sregion)
+               region_name=region)
 
         df = pd.read_sql(query, conn)
 
