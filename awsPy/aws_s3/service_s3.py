@@ -80,6 +80,29 @@ class connect_S3():
             logging.error(e)
             return False
         return True
+    
+    def move_file(self, source_key, destination_key, remove = True):
+        """
+        destination key should include name or new name
+        """
+        
+        source = "{}/{}".format(self.bucket, 
+                                     source_key)
+        
+        try:
+            self.client['resource'].Object(
+                self.bucket,
+                source_key).copy_from(
+                CopySource=source)
+            
+            if remove:
+                client['resource'].Object(self.bucket,
+                                          source_key).delete()
+                print("File {} is deleted".format(source_key))
+        except ClientError as e:
+            logging.error(e)
+            return False
+        return True
 
     def remove_all_bucket(self, path_remove):
         """
