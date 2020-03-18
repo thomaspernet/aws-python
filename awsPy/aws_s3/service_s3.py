@@ -92,7 +92,7 @@ class connect_S3():
         try:
             self.client['resource'].Object(
                 self.bucket,
-                source_key).copy_from(
+                destination_key).copy_from(
                 CopySource=source)
             
             if remove:
