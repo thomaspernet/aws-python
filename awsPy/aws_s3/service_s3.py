@@ -96,7 +96,7 @@ class connect_S3():
                 CopySource=source)
             
             if remove:
-                client['resource'].Object(self.bucket,
+                self.client['resource'].Object(self.bucket,
                                           source_key).delete()
                 print("File {} is deleted".format(source_key))
         except ClientError as e:
