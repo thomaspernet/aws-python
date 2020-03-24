@@ -103,6 +103,17 @@ class connect_S3():
             logging.error(e)
             return False
         return True
+    
+    def remove_file(self, key):
+        """
+        """
+        try:
+            self.client['resource'].Object(self.bucket,
+                                          key).delete()
+        except ClientError as e:
+            logging.error(e)
+            return False
+        return True
 
     def remove_all_bucket(self, path_remove):
         """
