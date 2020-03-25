@@ -3,6 +3,7 @@ import boto3, logging, io, os
 #from sagemaker import get_execution_role
 from botocore.exceptions import ClientError
 import pytz
+from datetime import datetime
 
 class connect_S3():
     def __init__(self,client, bucket):
