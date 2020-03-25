@@ -2,6 +2,7 @@ import pandas as pd
 import boto3, logging, io, os
 #from sagemaker import get_execution_role
 from botocore.exceptions import ClientError
+import pytz
 
 class connect_S3():
     def __init__(self,client, bucket):
@@ -127,7 +128,28 @@ class connect_S3():
             logging.error(e)
             return False
         return True
-
+    
+    def remove_all_folder_date_modified(self, 
+                                        path_remove,
+                                        date_filter,
+                                        timezone = "Europe/Paris"):
+        """Remove all files in folder if above date modified
+        date_filter format -> %Y/%m/%d
+        """
+        date_filter = timezone.localize(
+            datetime.strptime("{} 00:00:00".format(date_filter),
+                           "%Y/%m/%d %H:%M:%S")).astimezone(timezone)
+        try:
+            my_bucket = self.client['resource'].Bucket(
+                self.bucket)
+            for item in my_bucket.objects.filter(Prefix=path_remove):
+                if item.last_modified.astimezone(timezone) > date_filter:
+                    item.delete()
+        except ClientError as e:
+            logging.error(e)
+            return False
+        return True
+            
     def read_df_from_s3(self, key, sep = ',',encoding = None):
         """
         key is the key in S3
