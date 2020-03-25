@@ -136,14 +136,15 @@ class connect_S3():
         """Remove all files in folder if above date modified
         date_filter format -> %Y/%m/%d
         """
-        date_filter = timezone.localize(
+        py_timezone = pytz.timezone(timezone)
+        date_filter = py_timezone.localize(
             datetime.strptime("{} 00:00:00".format(date_filter),
-                           "%Y/%m/%d %H:%M:%S")).astimezone(timezone)
+                           "%Y/%m/%d %H:%M:%S")).astimezone(py_timezone)
         try:
             my_bucket = self.client['resource'].Bucket(
                 self.bucket)
             for item in my_bucket.objects.filter(Prefix=path_remove):
-                if item.last_modified.astimezone(timezone) > date_filter:
+                if item.last_modified.astimezone(py_timezone) > date_filter:
                     item.delete()
         except ClientError as e:
             logging.error(e)
