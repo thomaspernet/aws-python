@@ -61,7 +61,7 @@ class connect_S3():
             return False
         return True
 
-    def copy_object_s3(self,filename, destination):
+    def copy_object_s3(self,filename, destination, other_bucket = None):
         """
         filename -> include subfolder+filaneme
         ex: 'data/MR01_R_20200103.gz'
@@ -73,17 +73,21 @@ class connect_S3():
         'Bucket': self.bucket,
         'Key': filename
  }
+        if other_bucket == None:
+            bucket = self.bucket
+        else: 
+            bucket = other_bucket
         try:
             self.client['resource'].meta.client.copy(
             copy_source,
-             self.bucket,
+             bucket,
               destination)
         except ClientError as e:
             logging.error(e)
             return False
         return True
     
-    def move_file(self, source_key, destination_key, remove = True):
+    def move_object_s3(self, source_key, destination_key, remove = True):
         """
         destination key should include name or new name
         """
