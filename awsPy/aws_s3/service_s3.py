@@ -67,20 +67,25 @@ class connect_S3():
         ex: 'data/MR01_R_20200103.gz'
         destination: -> include subfolder+filaneme
         ex: 'data_sql/MR01_R_20200103.gz'
+        other_bucket: dictionary with {'origin_bucket : '', 'destination_bucket:''}
         """
+        
+        if other_bucket == None:
+            bucket_source = self.bucket
+            bucket_dest = self.bucket
+        else: 
+            bucket_source = other_bucket['origin_bucket']
+            bucket_dest = other_bucket['destination_bucket']
 
         copy_source = {
-        'Bucket': self.bucket,
+        'Bucket': bucket_source,
         'Key': filename
  }
-        if other_bucket == None:
-            bucket = self.bucket
-        else: 
-            bucket = other_bucket
+        
         try:
             self.client['resource'].meta.client.copy(
             copy_source,
-             bucket,
+             bucket_dest,
               destination)
         except ClientError as e:
             logging.error(e)
