@@ -31,7 +31,7 @@ class aws_instantiate():
 
     def client_boto(self):
         """
-        option -> ['s3', 'athena', 'ses', 'sns', 'resource']
+        option -> ['s3', 'athena', 'ses', 'sns', 'resource', 'logs']
         temporary, we load all clients...
         """
 
@@ -39,7 +39,7 @@ class aws_instantiate():
         store_client = {
         #'service': None
         }
-        for i, option in enumerate(['s3', 'athena', 'ses', 'sns', 'resource']):
+        for i, option in enumerate(['s3', 'athena', 'ses', 'sns', 'resource', 'logs']):
             if option == 'resource':
                 client_ = boto3.resource(
                     's3',
