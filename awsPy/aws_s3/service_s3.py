@@ -61,15 +61,16 @@ class connect_S3():
             return False
         return True
 
-    def copy_object_s3(self,filename, destination, other_bucket = None):
-        """
-        filename -> include subfolder+filaneme
-        ex: 'data/MR01_R_20200103.gz'
-        destination: -> include subfolder+filaneme
-        ex: 'data_sql/MR01_R_20200103.gz'
-        other_bucket: dictionary with {'origin_bucket : '', 'destination_bucket:''}
-        """
-        
+    def copy_object_s3(self,source_key, destination_key, other_bucket = None,
+                      remove = False):
+       """
+       filename -> include subfolder+filaneme
+       ex: 'data/MR01_R_20200103.gz'
+       destination: -> include subfolder+filaneme
+       ex: 'data_sql/MR01_R_20200103.gz'
+       other_bucket: dictionary with {'origin_bucket : '', 'destination_bucket:''}
+       """
+       
         if other_bucket == None:
             bucket_source = self.bucket
             bucket_dest = self.bucket
@@ -78,15 +79,19 @@ class connect_S3():
             bucket_dest = other_bucket['destination_bucket']
 
         copy_source = {
-        'Bucket': bucket_source,
-        'Key': filename
- }
-        
+       'Bucket': bucket_source,
+       'Key': source_key
+}
+       
         try:
             self.client['resource'].meta.client.copy(
             copy_source,
-             bucket_dest,
-              destination)
+            bucket_dest,
+            destination_key)
+           
+           if remove:
+               self.client['resource'].Object(self.bucket,
+                                         source_key).delete()
         except ClientError as e:
             logging.error(e)
             return False
