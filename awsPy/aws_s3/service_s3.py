@@ -89,7 +89,7 @@ class connect_S3():
             bucket_dest,
             destination_key)
            
-           if remove:
+            if remove:
                self.client['resource'].Object(self.bucket,
                                          source_key).delete()
         except ClientError as e:
