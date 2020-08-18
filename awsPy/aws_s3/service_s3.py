@@ -6,9 +6,10 @@ import pytz
 from datetime import datetime
 
 class connect_S3():
-    def __init__(self,client, bucket):
+    def __init__(self,client, bucket, verbose = True):
         self.client =client
         self.bucket = bucket
+        self.verbose = verbose
 #### S3
     def download_file(self, key):
         """
@@ -62,7 +63,7 @@ class connect_S3():
         return True
 
     def copy_object_s3(self,source_key, destination_key, other_bucket = None,
-                      remove = False):
+                      remove = False, verbose = False):
         """
         filename -> include subfolder+filaneme
         ex: 'data/MR01_R_20200103.gz'
@@ -93,7 +94,8 @@ class connect_S3():
                self.client['resource'].Object(self.bucket,
                                          source_key).delete()
         except ClientError as e:
-            logging.error(e)
+            if self.verbose:
+                logging.error(e)
             return False
         return True
     
