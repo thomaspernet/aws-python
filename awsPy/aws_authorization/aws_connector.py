@@ -15,8 +15,8 @@ class aws_instantiate():
             if file_extension== '.csv':
                 load_cred = pd.read_csv(self.credential)
 
-                key = load_cred.iloc[0, 1]
-                secret_ = load_cred.iloc[1, 1]
+                key = load_cred.iloc[0, 2]
+                secret_ = load_cred.iloc[0, 3]
 
             if file_extension== '.json':
                 with open(self.credential) as json_file:
