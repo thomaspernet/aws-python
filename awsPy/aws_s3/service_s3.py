@@ -215,7 +215,7 @@ class connect_S3():
             while results != True:
                 if destination_key != None:
                     source_key = os.path.join(
-                    destination_key,
+                    s3_output,
                      '{}.csv'.format(response['QueryExecutionId'])
                     )
 
@@ -223,8 +223,6 @@ class connect_S3():
                     destination_key,
                     '{}.csv'.format(filename)
                     )
-
-                    print(source_key, destination_key_filename)
 
                     results = self.copy_object_s3(
                                                     source_key = source_key,
