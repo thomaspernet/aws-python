@@ -71,11 +71,11 @@ class connect_S3():
         ex: 'data_sql/MR01_R_20200103.gz'
         other_bucket: dictionary with {'origin_bucket : '', 'destination_bucket:''}
         """
-       
+
         if other_bucket == None:
             bucket_source = self.bucket
             bucket_dest = self.bucket
-        else: 
+        else:
             bucket_source = other_bucket['origin_bucket']
             bucket_dest = other_bucket['destination_bucket']
 
@@ -83,13 +83,13 @@ class connect_S3():
        'Bucket': bucket_source,
        'Key': source_key
 }
-       
+
         try:
             self.client['resource'].meta.client.copy(
             copy_source,
             bucket_dest,
             destination_key)
-           
+
             if remove:
                self.client['resource'].Object(self.bucket,
                                          source_key).delete()
@@ -98,21 +98,21 @@ class connect_S3():
                 logging.error(e)
             return False
         return True
-    
+
     def move_object_s3(self, source_key, destination_key, remove = True):
         """
         destination key should include name or new name
         """
-        
-        source = "{}/{}".format(self.bucket, 
+
+        source = "{}/{}".format(self.bucket,
                                      source_key)
-        
+
         try:
             self.client['resource'].Object(
                 self.bucket,
                 destination_key).copy_from(
                 CopySource=source)
-            
+
             if remove:
                 self.client['resource'].Object(self.bucket,
                                           source_key).delete()
@@ -121,7 +121,7 @@ class connect_S3():
             logging.error(e)
             return False
         return True
-    
+
     def remove_file(self, key):
         """
         """
@@ -145,8 +145,8 @@ class connect_S3():
             logging.error(e)
             return False
         return True
-    
-    def remove_all_folder_date_modified(self, 
+
+    def remove_all_folder_date_modified(self,
                                         path_remove,
                                         date_filter,
                                         timezone = "Europe/Paris"):
@@ -167,7 +167,7 @@ class connect_S3():
             logging.error(e)
             return False
         return True
-            
+
     def read_df_from_s3(self, key, sep = ',',encoding = None):
         """
         key is the key in S3
@@ -185,3 +185,55 @@ class connect_S3():
             error_bad_lines=False)
 
         return df_
+
+    def run_query(self, query, database, s3_output, filename = None,
+    destination_key = None):
+        """
+        s3_output -> 'output_sql'
+        If filename != None, then return pandas dataframe
+        no extension in filename
+        Add kwarg ..
+        """
+
+
+        full_s3_output = 's3://{0}/{1}/'.format(self.bucket, s3_output)
+
+        client = self.client['athena']
+        response = client.start_query_execution(
+            QueryString=query,
+            QueryExecutionContext={
+                'Database': database
+                },
+            ResultConfiguration={
+            'OutputLocation': full_s3_output,
+            }
+        )
+        print('Execution ID: ' + response['QueryExecutionId'])
+        if filename != None:
+            results = False
+
+            while results != True:
+                if destination_key != None:
+                    source_key = os.path.join(
+                    destination_key,
+                     '{}.csv'.format(output['QueryExecutionId'])
+                    )
+
+                    destination_key_filename = os.path.join(
+                    destination_key,
+                    '{}.csv'.format(filename)
+                    )
+
+                    results = self.copy_object_s3(
+                                                    source_key = source_key,
+                                                    destination_key = destination_key_filename,
+                                                    remove = True
+                                                )
+                    #key_file = 'XX/{}'.format(filename)
+
+            table = (s3.read_df_from_s3(
+                        key = destination_key_filename, sep = ',')
+                        )
+            return table
+        else:
+            return response
