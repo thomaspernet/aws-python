@@ -1,8 +1,7 @@
 import pandas as pd
-import boto3
+import boto3, os
 #from sagemaker import get_execution_role
 #import dask.dataframe as dd
-from pyathena import connect
 
 class connect_athena():
     def __init__(self, client = None, bucket=None, credentials = None):
@@ -12,9 +11,13 @@ class connect_athena():
         self.client =client
         self.bucket = bucket
 
-    def run_query(self, query, database, s3_output):
+    def run_query(self, query, database, s3_output, filename = None,
+    destination_key = None):
         """
         s3_output -> 'output_sql'
+        If filename != None, then return pandas dataframe
+        no extension in filename
+        Add kwarg ..
         """
 
 
@@ -31,24 +34,31 @@ class connect_athena():
             }
         )
         print('Execution ID: ' + response['QueryExecutionId'])
-        return response
+        if filename != None:
+            results = False
 
-    def query_to_df(self, query, s3_output, region):
-        """
-        s3_output -> 'output_sql'
-        need to review this! Should not rely on third party library
-        """
+            while results != True:
+                if destination_key != None:
+                    source_key = os.path.join(
+                    destination_key,
+                     '{}.csv'.format(output['QueryExecutionId'])
+                    )
 
-        key = self.credentials[0]
-        secret_ = self.credentials[1]
+                    destination_key_filename = os.path.join(
+                    destination_key,
+                    '{}.csv'.format(filename)
+                    )
 
-        s3_output = 's3://{}/{}/'.format(self.bucket, s3_output)
+                    results = s3.copy_object_s3(
+                                                    source_key = source_key,
+                                                    destination_key = destination_key_filename,
+                                                    remove = True
+                                                )
+                    #key_file = 'XX/{}'.format(filename)
 
-        conn = connect(aws_access_key_id=self.key,
-               aws_secret_access_key=self.secret_,
-               s3_staging_dir=s3_output,
-               region_name=region)
-
-        df = pd.read_sql(query, conn)
-
-        return df
+            table = (s3.read_df_from_s3(
+                        key = destination_key_filename, sep = ',')
+                        )
+            return table
+        else:
+            return response
