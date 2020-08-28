@@ -236,9 +236,9 @@ class connect_S3():
                     s3_output,
                     '{}.csv'.format(response['QueryExecutionId'])
                     )
-                    print(destination_key_filename)
-                    #key_file = 'XX/{}'.format(filename)
 
+                    #key_file = 'XX/{}'.format(filename)
+            print(destination_key_filename)
             table = (self.read_df_from_s3(
                         key = destination_key_filename, sep = ',')
                         )
