@@ -231,17 +231,21 @@ class connect_S3():
                                                     remove = True
                                                 )
                 else:
-                    results = True
+
                     destination_key_filename = os.path.join(
                     s3_output,
                     '{}.csv'.format(response['QueryExecutionId'])
                     )
+                    results = (self.read_df_from_s3(
+                                key = destination_key_filename, sep = ',')
+                                )
 
-                    #key_file = 'XX/{}'.format(filename)
-            print(destination_key_filename)
-            table = (self.read_df_from_s3(
+            if destination_key != None:
+                table = (self.read_df_from_s3(
                         key = destination_key_filename, sep = ',')
                         )
-            return table
+                return table
+            else:
+                return results
         else:
             return response
