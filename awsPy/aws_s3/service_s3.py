@@ -240,6 +240,7 @@ class connect_S3():
                         results = (self.read_df_from_s3(
                                 key = destination_key_filename, sep = ',')
                                 )
+                        return results
                     except:
                         pass
 
@@ -248,7 +249,6 @@ class connect_S3():
                         key = destination_key_filename, sep = ',')
                         )
                 return table
-            else:
-                return results
+
         else:
             return response
