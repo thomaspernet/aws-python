@@ -236,9 +236,12 @@ class connect_S3():
                     s3_output,
                     '{}.csv'.format(response['QueryExecutionId'])
                     )
-                    results = (self.read_df_from_s3(
+                    try:
+                        results = (self.read_df_from_s3(
                                 key = destination_key_filename, sep = ',')
                                 )
+                    except:
+                        pass
 
             if destination_key != None:
                 table = (self.read_df_from_s3(
