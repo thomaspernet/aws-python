@@ -232,7 +232,7 @@ class connect_S3():
                 else:
                     results = True
                     destination_key_filename = os.path.join(
-                    destination_key,
+                    s3_output,
                     '{}.csv'.format(response['QueryExecutionId'])
                     )
                     #key_file = 'XX/{}'.format(filename)
