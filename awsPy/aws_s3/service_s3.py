@@ -216,7 +216,7 @@ class connect_S3():
                 if destination_key != None:
                     source_key = os.path.join(
                     destination_key,
-                     '{}.csv'.format(output['QueryExecutionId'])
+                     '{}.csv'.format(response['QueryExecutionId'])
                     )
 
                     destination_key_filename = os.path.join(
