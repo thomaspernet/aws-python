@@ -229,6 +229,12 @@ class connect_S3():
                                                     destination_key = destination_key_filename,
                                                     remove = True
                                                 )
+                else:
+                    results = True
+                    destination_key_filename = os.path.join(
+                    destination_key,
+                    '{}.csv'.format(response['QueryExecutionId'])
+                    )
                     #key_file = 'XX/{}'.format(filename)
 
             table = (s3.read_df_from_s3(
