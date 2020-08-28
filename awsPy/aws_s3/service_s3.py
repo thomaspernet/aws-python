@@ -224,6 +224,8 @@ class connect_S3():
                     '{}.csv'.format(filename)
                     )
 
+                    print(source_key, destination_key_filename)
+
                     results = self.copy_object_s3(
                                                     source_key = source_key,
                                                     destination_key = destination_key_filename,
