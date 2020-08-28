@@ -237,7 +237,7 @@ class connect_S3():
                     )
                     #key_file = 'XX/{}'.format(filename)
 
-            table = (s3.read_df_from_s3(
+            table = (self.read_df_from_s3(
                         key = destination_key_filename, sep = ',')
                         )
             return table
