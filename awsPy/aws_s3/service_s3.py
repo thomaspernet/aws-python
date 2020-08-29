@@ -239,11 +239,24 @@ class connect_S3():
             'OutputLocation': full_s3_output,
             }
         )
-        print('Execution ID: ' + response['QueryExecutionId'])
-        if filename != None:
-            results = False
 
-            while results != True:
+        results_temp = "QUEUED"
+        while results_temp == "RUNNING" or results_temp == "QUEUED":
+            results_temp = client.get_query_execution(
+            QueryExecutionId= output['QueryExecutionId']
+            )['QueryExecution']['Status']['State']
+
+        result = {client.get_query_execution(
+        QueryExecutionId= output['QueryExecutionId']
+        )['QueryExecution']['Status']
+        }
+
+        #print('Execution ID: ' + response['QueryExecutionId'])
+        if filename != None:
+            #results = False
+
+            #while results != True:
+            if result['State'] != 'FAILED':
                 source_key = os.path.join(
                 s3_output,
                  '{}.csv'.format(response['QueryExecutionId'])
@@ -282,4 +295,5 @@ class connect_S3():
                 return table
 
         else:
-            return response
+            return result
+        return result
