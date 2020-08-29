@@ -197,7 +197,7 @@ class connect_S3():
 
         prefix_ = "{}/".format(prefix)
 
-        prefix_objs = bucket.objects.filter(Prefix=prefix_)
+        prefix_objs = my_bucket.objects.filter(Prefix=prefix_)
         for obj in prefix_objs:
             key_ = "s3://{}/{}".format(self.bucket,obj.key)
             if key_ not in ['s3://{}/{}/'.format(self.bucket, prefix)]:
