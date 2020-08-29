@@ -168,7 +168,7 @@ class connect_S3():
             return False
         return True
 
-    def read_df_from_s3(self, key, sep = ',',encoding = None, name = None):
+    def read_df_from_s3(self, key, sep = ',',encoding = None, names = None):
         """
         key is the key in S3
         No Dask supported yet
@@ -181,7 +181,7 @@ class connect_S3():
             io.BytesIO(body),
             sep = sep,
             encoding=encoding,
-            names = name,
+            names = names,
             low_memory=False,
             error_bad_lines=False)
 
