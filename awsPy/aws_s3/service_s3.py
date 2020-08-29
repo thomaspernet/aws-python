@@ -186,6 +186,35 @@ class connect_S3():
 
         return df_
 
+    def list_all_files_with_prefix(self, prefix):
+        """
+        List all files name in key (bucket/folder)
+        no "/" at the end in prefix
+        """
+
+        my_bucket = self.client['resource'].Bucket(
+            self.bucket)
+
+        prefix_ = "{}/".format(prefix)
+
+        prefix_objs = bucket.objects.filter(Prefix=prefix_)
+        for obj in prefix_objs:
+            key_ = "s3://{}/{}".format(self.bucket,obj.key)
+                if key_ not in ['s3://{}/{}/'.format(self.bucket, prefix)]:
+                    file_to_load.append(key_)
+
+        file_to_load = list(
+            map(
+                lambda x:
+                x.replace("s3://{}/".format(self.bucket), ""),
+                file_to_load
+            )
+        )
+
+        return file_to_load
+
+
+
     def run_query(self, query, database, s3_output, filename = None,
     destination_key = None):
         """
