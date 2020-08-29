@@ -196,6 +196,7 @@ class connect_S3():
             self.bucket)
 
         prefix_ = "{}/".format(prefix)
+        file_to_load = []
 
         prefix_objs = my_bucket.objects.filter(Prefix=prefix_)
         for obj in prefix_objs:
