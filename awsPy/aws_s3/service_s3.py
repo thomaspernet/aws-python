@@ -246,10 +246,10 @@ class connect_S3():
             QueryExecutionId= response['QueryExecutionId']
             )['QueryExecution']['Status']['State']
 
-        result = {client.get_query_execution(
+        result = client.get_query_execution(
         QueryExecutionId= response['QueryExecutionId']
         )['QueryExecution']['Status']
-        }
+        
 
         #print('Execution ID: ' + response['QueryExecutionId'])
         if filename != None:
