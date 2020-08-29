@@ -243,11 +243,11 @@ class connect_S3():
         results_temp = "QUEUED"
         while results_temp == "RUNNING" or results_temp == "QUEUED":
             results_temp = client.get_query_execution(
-            QueryExecutionId= output['QueryExecutionId']
+            QueryExecutionId= response['QueryExecutionId']
             )['QueryExecution']['Status']['State']
 
         result = {client.get_query_execution(
-        QueryExecutionId= output['QueryExecutionId']
+        QueryExecutionId= response['QueryExecutionId']
         )['QueryExecution']['Status']
         }
 
