@@ -246,17 +246,20 @@ class connect_S3():
             QueryExecutionId= response['QueryExecutionId']
             )['QueryExecution']['Status']['State']
 
-        result = client.get_query_execution(
+        result = {
+        'Results':client.get_query_execution(
         QueryExecutionId= response['QueryExecutionId']
-        )['QueryExecution']['Status']
-        
+        )['QueryExecution']['Status'],
+        'QueryID': response['QueryExecutionId']
+        }
+
 
         #print('Execution ID: ' + response['QueryExecutionId'])
         if filename != None:
             #results = False
 
             #while results != True:
-            if result['State'] != 'FAILED':
+            if result['Results']['State'] != 'FAILED':
                 source_key = os.path.join(
                 s3_output,
                  '{}.csv'.format(response['QueryExecutionId'])
