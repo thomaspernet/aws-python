@@ -8,7 +8,6 @@ class connect_glue():
         crediitnals is a list
         """
         self.client =client
-        self.bucket = bucket
 
     def get_table_information(self, database, table):
         """
@@ -39,6 +38,7 @@ class connect_glue():
         DatabaseName=database,
         Name=table
     )
+        #### update the schema
         list_schema = response['Table']['StorageDescriptor']['Columns']
         for field in list_schema:
             try:
@@ -49,14 +49,11 @@ class connect_glue():
             except:
                 pass
 
+        response['Table']['StorageDescriptor']['Columns'] = list_schema
+
         self.client['glue'].update_table(
             DatabaseName=database,
-            TableInput = {
-                'Name':table,
-                'StorageDescriptor':{
-                    'Columns' : list_schema
-                }
-            }
+            TableInput = response
         )
 
-        return list_schema
+        return response
