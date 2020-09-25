@@ -39,7 +39,7 @@ class connect_glue():
         Name=table
     )['Table']
         #### update the schema
-        list_schema = response['Table']['StorageDescriptor']['Columns']
+        list_schema = response['StorageDescriptor']['Columns']
         for field in list_schema:
             try:
                 field['Comment'] = next(
