@@ -14,17 +14,17 @@ class aws_instantiate():
             filename, file_extension = os.path.splitext(self.credential)
             if file_extension== '.csv':
                 load_cred = pd.read_csv(self.credential)
-                
+
                 try:
-    
+
                     key = load_cred.iloc[0, 2]
                     secret_ = load_cred.iloc[0, 3]
-            
+
                 except:
-                    
+
                     key = load_cred.iloc[0, 0]
                     secret_ = load_cred.iloc[0, 1]
-                    
+
 
             if file_extension== '.json':
                 with open(self.credential) as json_file:
@@ -47,7 +47,7 @@ class aws_instantiate():
         store_client = {
         #'service': None
         }
-        for i, option in enumerate(['s3', 'athena', 'ses', 'sns', 'resource', 'logs']):
+        for i, option in enumerate(['s3', 'athena', 'ses', 'sns', 'resource', 'logs', 'glue']):
             if option == 'resource':
                 client_ = boto3.resource(
                     's3',
