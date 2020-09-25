@@ -49,7 +49,7 @@ class connect_glue():
             except:
                 pass
 
-        response['Table']['StorageDescriptor']['Columns'] = list_schema
+        response['StorageDescriptor']['Columns'] = list_schema
 
         self.client['glue'].update_table(
             DatabaseName=database,
