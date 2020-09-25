@@ -33,6 +33,8 @@ class connect_glue():
         'Comment': 'Official chinese city ID'}
         ]
         """
+        key_to_remove = ['DatabaseName', 'CreateTime', 'UpdateTime', 'CreatedBy',
+                 'IsRegisteredWithLakeFormation', 'CatalogId']
 
         response = self.client['glue'].get_table(
         DatabaseName=database,
@@ -50,10 +52,12 @@ class connect_glue():
                 pass
 
         response['StorageDescriptor']['Columns'] = list_schema
+        for key in key_to_remove:
+            response.pop(key, None)
 
-        self.client['glue'].update_table(
+        update = self.client['glue'].update_table(
             DatabaseName=database,
             TableInput = response
         )
 
-        return response
+        return update
