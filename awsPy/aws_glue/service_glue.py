@@ -37,7 +37,7 @@ class connect_glue():
         response = self.client['glue'].get_table(
         DatabaseName=database,
         Name=table
-    )
+    )['Table']
         #### update the schema
         list_schema = response['Table']['StorageDescriptor']['Columns']
         for field in list_schema:
