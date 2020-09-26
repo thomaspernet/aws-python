@@ -168,7 +168,7 @@ class connect_S3():
             return False
         return True
 
-    def read_df_from_s3(self, key, sep = ',',encoding = None, names = None):
+    def read_df_from_s3(self, key, sep = ',',encoding = None, names = None, dtype = None):
         """
         key is the key in S3
         No Dask supported yet
@@ -182,6 +182,7 @@ class connect_S3():
             sep = sep,
             encoding=encoding,
             names = names,
+            dtype = dtype,
             low_memory=False,
             error_bad_lines=False)
 
@@ -218,7 +219,7 @@ class connect_S3():
 
 
     def run_query(self, query, database, s3_output, filename = None,
-    destination_key = None):
+    destination_key = None, dtype = None):
         """
         s3_output -> 'output_sql'
         If filename != None, then return pandas dataframe
@@ -285,7 +286,9 @@ class connect_S3():
                     )
                     try:
                         results = (self.read_df_from_s3(
-                                key = destination_key_filename, sep = ',')
+                                key = destination_key_filename,
+                                sep = ',',
+                                dtype = dtype)
                                 )
                         return results
                     except:
