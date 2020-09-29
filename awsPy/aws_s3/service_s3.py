@@ -11,19 +11,27 @@ class connect_S3():
         self.bucket = bucket
         self.verbose = verbose
 #### S3
-    def download_file(self, key):
+    def download_file(self, key, path_local = None):
         """
         key -> key from S3
+        path_local: Path to save locally. No filename required
+        and should not end with "/". If None, the download in the
+        same folder as the script
         """
         #if subfolder is None:
         #paths3 = '{}/{}'.format(self.bucket, file_name)
 
         client_boto = self.client['resource']
         filename = os.path.split(key)[1]
+        if path_local != None:
+            path_to_download = os.path.join(path_local, filename)
+        else:
+            path_to_download = filename
+
 
     # Download the file
         try:
-            client_boto.Bucket(self.bucket).download_file(key, filename)
+            client_boto.Bucket(self.bucket).download_file(key, path_to_download)
         except ClientError as e:
             if e.response['Error']['Code'] == "404":
                 print("The object does not exist.")
