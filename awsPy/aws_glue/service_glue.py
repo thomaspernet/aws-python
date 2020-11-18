@@ -44,6 +44,13 @@ class connect_glue():
         list_schema = response['StorageDescriptor']['Columns']
         for field in list_schema:
             try:
+                ## Update type
+                field['Type'] = next(
+                    item for item in schema if item["Name"] == field['Name']
+                )['Type']
+
+                ## Update Comment
+
                 field['Comment'] = next(
                     item for item in schema if item["Name"] == field['Name']
                 )['Comment']
