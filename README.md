@@ -1,9 +1,10 @@
 
-This library proposes a straightforward data workflow between Jupyter notebook, Google Drive, and Google Cloud Platform. The library contains three modules:
+This library is a boto3 wrapper to use the AWS services using the API. The library contains three modules:
 
 - `aws_authorization`: Gives authorization to access AWS service
 - `aws_s3`: Provides the necessary operations on **S3**
-- `aws_athena`:  Provides the necessary operations on **Athena**
+  - including **Athena**
+- `aws_glue`:  Provides the necessary operations on **Glue**
 
 ## Install library
 
