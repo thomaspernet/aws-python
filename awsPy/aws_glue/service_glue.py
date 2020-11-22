@@ -199,3 +199,25 @@ class connect_glue():
             )['Table']
 
         return response
+
+    def delete_table(self, database, table):
+        """
+        Delete table
+
+        database (string) --
+        [REQUIRED]
+
+        The name of the catalog database in which the table resides. For Hive compatibility, this name is entirely lowercase.
+
+        table (string) --
+        [REQUIRED]
+
+        The name of the table to be deleted. For Hive compatibility, this name is entirely lowercase.
+
+        """
+
+        response = self.client['glue'].delete_table(
+            DatabaseName=database,
+            Name=table
+        )
+        return response
