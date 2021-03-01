@@ -9,7 +9,7 @@ class connect_glue():
         """
         self.client =client
 
-    def get_databases(self full_output = True):
+    def get_databases(self, full_output = True):
         """
         add kwargs CatalogId=None, NextToken=None, MaxResults=None, ResourceShareType=None
         CatalogId (string) -- The ID of the Data Catalog from which to retrieve Databases . If none is provided, the AWS account ID is used by default.
