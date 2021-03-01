@@ -24,10 +24,27 @@ class connect_glue():
 
         """
         response = self.client['glue'].get_databases()
-        if full_output:
+        if full_output == False:
              response = [i['Name'] for i in response['DatabaseList']]
 
         return response
+
+    def get_tables(self, full_output = True):
+        """
+        """
+
+        ### fetch databases
+        databases = self.get_databases(full_output = False)
+
+        list_tables = []
+        for i in databases:
+            tables = client['glue'].get_tables(DatabaseName = i)
+            list_tables.extend(tables['TableList'])
+
+        if full_output == False:
+             list_tables = [i['Name'] for i in list_tables]
+
+        return list_tables
 
     def get_table_information(self, database, table):
         """
