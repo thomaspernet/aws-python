@@ -9,6 +9,26 @@ class connect_glue():
         """
         self.client =client
 
+    def get_databases(self full_output = True):
+        """
+        add kwargs CatalogId=None, NextToken=None, MaxResults=None, ResourceShareType=None
+        CatalogId (string) -- The ID of the Data Catalog from which to retrieve Databases . If none is provided, the AWS account ID is used by default.
+        NextToken (string) -- A continuation token, if this is a continuation call.
+        MaxResults (integer) -- The maximum number of databases to return in one response.
+        ResourceShareType (string) --
+        Allows you to specify that you want to list the databases shared with your account. The allowable values are FOREIGN or ALL .
+
+        If set to FOREIGN , will list the databases shared with your account.
+        If set to ALL , will list the databases shared with your account, as well as the databases in yor local account.
+        full_output: choise of output. If True, then return full databases information else databases name as a list
+
+        """
+        response = self.client['glue'].get_databases()
+        if full_output:
+             response = [i['Name'] for i in response['DatabaseList']]
+
+        return response
+
     def get_table_information(self, database, table):
         """
         database: Database name
