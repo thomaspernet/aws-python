@@ -38,7 +38,7 @@ class connect_glue():
 
         list_tables = []
         for i in databases:
-            tables = client['glue'].get_tables(DatabaseName = i)
+            tables = self.client['glue'].get_tables(DatabaseName = i)
             list_tables.extend(tables['TableList'])
 
         if full_output == False:
