@@ -6,7 +6,8 @@ with open("README.md", "r") as fh:
 #required_package = ['numpy', 'pandas', 'seaborn', 'matplotlib',
 #'scipy', 'plotly', 'researchpy', 'statsmodels', 'squarify']
 
-required_package = ['pandas', 'boto3', 'pyathena']
+required_package = ['pandas', 'boto3'#, 'pyathena'
+]
 
 setuptools.setup(
      name='awsPy',
