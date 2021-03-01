@@ -11,7 +11,7 @@ required_package = ['pandas', 'boto3'#, 'pyathena'
 
 setuptools.setup(
      name='awsPy',
-     version='0.2',
+     version='0.3',
      #scripts=['data_analysis_econometrics'] ,
      author="Thomas Pernet",
      author_email="t.pernetcoudrier@gmail.com",
