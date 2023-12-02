@@ -192,7 +192,7 @@ class connect_S3():
             names = names,
             dtype = dtype,
             low_memory=False,
-            error_bad_lines=False)
+            on_bad_lines='skip')
 
         return df_
 
