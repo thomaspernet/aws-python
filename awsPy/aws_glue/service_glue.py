@@ -71,7 +71,7 @@ class connect_glue():
         ]
         """
         key_to_remove = ['DatabaseName', 'CreateTime', 'UpdateTime', 'CreatedBy',
-                 'IsRegisteredWithLakeFormation', 'CatalogId']
+                 'IsRegisteredWithLakeFormation', 'CatalogId', 'VersionId', 'IsMultiDialectView']
 
         response = self.client['glue'].get_table(
         DatabaseName=database,
